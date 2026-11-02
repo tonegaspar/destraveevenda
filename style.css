@@ -435,3 +435,12 @@ h2{font-size:clamp(31px,5vw,48px);line-height:1.04;margin:0 0 15px;letter-spacin
 .hero-black-logo{filter:drop-shadow(0 0 22px rgba(255,178,41,.3));}
 .brand strong{letter-spacing:.08em;}
 @media(max-width:520px){.main-headline .headline-gold{line-height:1.13;} .brand strong{font-size:10px;}}
+
+/* Perfil do mentor e relato pessoal */
+.mentor-profile{display:flex;align-items:center;justify-content:center;gap:14px;margin:22px auto 16px;max-width:580px;text-align:left;color:#f4d18b;font-weight:700;font-size:clamp(13px,1.7vw,16px)}
+.mentor-profile img{width:76px;height:76px;flex:none;border-radius:50%;object-fit:cover;object-position:center 30%;border:2px solid #dca63f;box-shadow:0 0 0 4px rgba(220,166,63,.12)}
+.mentor-story{text-align:left;max-width:730px;margin:0 auto 26px;line-height:1.7}
+.mentor-story p{margin:0 0 15px}
+.mentor-story p:last-child{margin-bottom:0}
+.mentor-story strong{color:#f8d38a}
+@media(max-width:600px){.mentor-profile{gap:11px}.mentor-profile img{width:62px;height:62px}.mentor-story{line-height:1.6}}
