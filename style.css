@@ -444,3 +444,6 @@ h2{font-size:clamp(31px,5vw,48px);line-height:1.04;margin:0 0 15px;letter-spacin
 .mentor-story p:last-child{margin-bottom:0}
 .mentor-story strong{color:#f8d38a}
 @media(max-width:600px){.mentor-profile{gap:11px}.mentor-profile img{width:62px;height:62px}.mentor-story{line-height:1.6}}
+
+/* Destaque da data 09/11 na chamada principal */
+.date-headline strong { color: #fff2bb; font-weight: 900; font-size: 1.22em; letter-spacing: .015em; text-shadow: 0 0 22px rgba(255,181,47,.35); }
