@@ -64,29 +64,21 @@
         </a>
       </div>
 
-      <section class="testimonials" aria-label="Depoimentos de alunos">
-        <div class="testimonials-heading">RESULTADOS COMPARTILHADOS POR ALUNOS</div>
-        <div class="testimonials-window" id="testimonials-window">
-          <div class="testimonials-track" id="testimonials-track">
-            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 1"><img src="depoimento-01.png" alt="Depoimento de aluno 1" loading="lazy"></button>
-            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 2"><img src="depoimento-02.png" alt="Depoimento de aluno 2" loading="lazy"></button>
-            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 3"><img src="depoimento-03.png" alt="Depoimento de aluno 3" loading="lazy"></button>
-            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 4"><img src="depoimento-04.png" alt="Depoimento de aluno 4" loading="lazy"></button>
-            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 5"><img src="depoimento-05.png" alt="Depoimento de aluno 5" loading="lazy"></button>
-            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 6"><img src="depoimento-06.png" alt="Depoimento de aluno 6" loading="lazy"></button>
-            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 7"><img src="depoimento-07.png" alt="Depoimento de aluno 7" loading="lazy"></button>
-            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 8"><img src="depoimento-08.png" alt="Depoimento de aluno 8" loading="lazy"></button>
-            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 9"><img src="depoimento-09.png" alt="Depoimento de aluno 9" loading="lazy"></button>
-            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 10"><img src="depoimento-10.png" alt="Depoimento de aluno 10" loading="lazy"></button>
-            <button class="testimonial-slide" type="button" aria-label="Ampliar depoimento 11"><img src="depoimento-11.png" alt="Depoimento de aluno 11" loading="lazy"></button>
-          </div>
+      <section class="featured-video-section" aria-label="Vídeo do evento de reconhecimento da comunidade MSA">
+        <div class="featured-video-kicker">CONHEÇA A COMUNIDADE MSA</div>
+        <h2>Veja um momento do nosso evento de reconhecimento.</h2>
+        <div class="featured-video-frame" id="featured-video-frame">
+          <video id="featured-video" class="featured-video" playsinline muted autoplay loop preload="none" poster="capa-video.jpg" aria-label="Vídeo do evento de reconhecimento da comunidade MSA">
+            <source src="depoimento-evento.mp4" type="video/mp4">
+            Seu navegador não suporta reprodução de vídeo.
+          </video>
+          <button class="featured-video-sound" id="featured-video-sound" type="button" aria-label="Ativar o som do vídeo">
+            <span class="sound-symbol" aria-hidden="true">🔊</span>
+            <strong>TOQUE PARA OUVIR</strong>
+          </button>
         </div>
-        <p class="testimonials-hint">Toque em uma imagem para ampliar • Resultados individuais podem variar</p>
+        <p class="featured-video-caption">Vídeo do evento de reconhecimento da comunidade MSA. Experiências e resultados individuais podem variar.</p>
       </section>
-      <div class="testimonial-modal" id="testimonial-modal" role="dialog" aria-modal="true" aria-label="Depoimento ampliado" hidden>
-        <button type="button" class="testimonial-close" id="testimonial-close" aria-label="Fechar imagem">×</button>
-        <img id="testimonial-large" src="depoimento-01.png" alt="Depoimento ampliado">
-      </div>
 
       <div class="platforms" aria-label="Plataformas abordadas na mentoria">
         <p>Plataformas em que você pode aprender a vender</p>
@@ -249,42 +241,29 @@
 
   <script>
   (() => {
-    const viewport = document.getElementById('testimonials-window');
-    const track = document.getElementById('testimonials-track');
-    const modal = document.getElementById('testimonial-modal');
-    const enlarged = document.getElementById('testimonial-large');
-    const close = document.getElementById('testimonial-close');
-    if (!viewport || !track) return;
-    // Avanço por slide em intervalos: evita animação contínua pesada no iPhone.
-    const slides = [...track.querySelectorAll('.testimonial-slide')];
-    let current = 0;
-    let paused = false;
-    const advance = () => {
-      if (paused || document.hidden || !modal.hidden || !slides.length) return;
-      current = (current + 1) % slides.length;
-      const target = slides[current];
-      const left = target.offsetLeft - (viewport.clientWidth - target.offsetWidth) / 2;
-      viewport.scrollTo({left: Math.max(0, left), behavior: 'smooth'});
-      if (current === 0) viewport.scrollTo({left: 0, behavior: 'smooth'});
-    };
-    const timer = window.setInterval(advance, 3200);
-    viewport.addEventListener('mouseenter', () => paused = true);
-    viewport.addEventListener('mouseleave', () => paused = false);
-    viewport.addEventListener('touchstart', () => paused = true, {passive:true});
-    viewport.addEventListener('touchend', () => { window.setTimeout(() => paused = false, 4000); }, {passive:true});
-    viewport.addEventListener('focusin', () => paused = true);
-    viewport.addEventListener('focusout', () => paused = false);
-    track.addEventListener('click', e => {
-      const btn = e.target.closest('.testimonial-slide');
-      if (!btn) return;
-      const img = btn.querySelector('img');
-      enlarged.src = img.src; enlarged.alt = img.alt;
-      modal.hidden = false; document.body.style.overflow = 'hidden'; close.focus();
+    const video = document.getElementById('featured-video');
+    const sound = document.getElementById('featured-video-sound');
+    if (!video || !sound) return;
+    video.muted = true;
+    const attemptPlay = () => video.play().catch(() => {});
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting && !document.hidden) attemptPlay();
+        else video.pause();
+      }
+    }, {threshold: 0.25});
+    observer.observe(video);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) video.pause();
+      else if (video.getBoundingClientRect().top < innerHeight && video.getBoundingClientRect().bottom > 0) attemptPlay();
     });
-    function dismiss() { modal.hidden = true; document.body.style.overflow = ''; }
-    close.addEventListener('click', dismiss);
-    modal.addEventListener('click', e => { if (e.target === modal) dismiss(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) dismiss(); });
+    sound.addEventListener('click', () => {
+      video.muted = false;
+      video.controls = true;
+      sound.hidden = true;
+      attemptPlay();
+      if (typeof fbq === 'function') fbq('trackCustom', 'AtivouAudioDepoimento');
+    });
   })();
   </script>
 </body>
